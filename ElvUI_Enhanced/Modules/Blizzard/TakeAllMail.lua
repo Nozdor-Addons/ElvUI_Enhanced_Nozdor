@@ -17,6 +17,14 @@ local ERR_INV_FULL = ERR_INV_FULL
 
 local MAIL_MIN_DELAY = 0.15
 
+function TAM:KillPostalOpenAllButton()
+    local f = _G["PostalOpenAllButton"]
+    if not f then return end
+    if f.UnregisterAllEvents then f:UnregisterAllEvents() end
+    if f.SetScript then f:SetScript("OnShow", f.Hide) end
+    f:Hide()
+end
+
 function TAM:GetTotalCash()
 	if GetInboxNumItems() == 0 then return 0 end
 
@@ -213,6 +221,7 @@ function TAM:OnEvent(event, errstr)
 		self:UnregisterEvent("MAIL_SHOW")
 
 		self:UpdateButtons(true)
+		self:KillPostalOpenAllButton()
 	elseif event == "MAIL_CLOSED" then
 		self:RegisterEvent("MAIL_SHOW", "OnEvent")
 		self:UnregisterEvent("MAIL_CLOSED")
